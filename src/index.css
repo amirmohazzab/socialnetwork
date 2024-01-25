@@ -44,3 +44,14 @@ a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover, a.navbar-i
   background-color: transparent;
   color: #74af72
 }
+
+@media screen and (max-width: 1024px){
+  .navbar {
+    display: flex !important;
+  }
+
+  .navbar-item {
+    justify-content: space-between;
+  }
+  
+}
