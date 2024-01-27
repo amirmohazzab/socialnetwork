@@ -4,8 +4,10 @@ export const successMessage = (message)=> {
     toast.success(message, {
         position: "bottom-center",
         autoClose: 3000,
+        hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true
+        pauseOnHover: true,
+        theme: 'light'
     });
 };
 

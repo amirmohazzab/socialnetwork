@@ -27,31 +27,7 @@ code {
 }
 
 
-.navbar {
-  background-color: hsl(0 100% 100% / 0);
+.container {
+  padding: 0 20px;
 }
 
-
-.navbar-item  {
-  color: #fff;
-}
-
-.navbar-item img {
-  max-height: 3rem;
-}
-
-a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover, a.navbar-item.is-active, .navbar-link:focus, .navbar-link:focus-within, .navbar-link:hover, .navbar-link.is-active {
-  background-color: transparent;
-  color: #74af72
-}
-
-@media screen and (max-width: 1024px){
-  .navbar {
-    display: flex !important;
-  }
-
-  .navbar-item {
-    justify-content: space-between;
-  }
-  
-}

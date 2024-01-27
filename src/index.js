@@ -7,6 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import { AuthContextProvider } from './context/AuthContext';
+import { CategoryContextProvider } from './context/CategoryContext';
+import { PostContextProvider } from './context/PostContext';
 
 
 axios.defaults.withCredentials = true;
@@ -17,7 +19,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
     <AuthContextProvider>
-      <App />
+      <CategoryContextProvider>
+        <PostContextProvider>
+          <App />
+        </PostContextProvider>
+      </CategoryContextProvider>
     </AuthContextProvider>
     </BrowserRouter>
   </React.StrictMode>

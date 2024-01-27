@@ -1,0 +1,67 @@
+
+.navbar {
+    background-color: hsl(0 100% 100% / 0);
+  }
+  
+  
+  .navbar-item  {
+    color: #fff;
+  }
+  
+  .navbar-item img {
+    max-height: 3rem;
+  }
+  
+  a.navbar-item:focus, a.navbar-item:focus-within, a.navbar-item:hover, a.navbar-item.is-active, .navbar-link:focus, .navbar-link:focus-within, .navbar-link:hover, .navbar-link.is-active {
+    background-color: transparent;
+    color: #74af72
+  }
+
+  .img-profile {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    object-fit: cover;
+}
+
+
+.navbar span {
+    position: relative;
+    cursor: pointer;
+}
+
+
+.navbar .profile {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    background: white;
+    width: 150px;
+    padding: 20px 10px;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.4);
+}
+
+.navbar .profile a {
+    margin-bottom: 15px;
+    color: black;
+}
+
+.navbar .profile button {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+}
+  
+  @media screen and (max-width: 1024px){
+    .navbar {
+      display: flex !important;
+    }
+  
+    .navbar-item {
+      justify-content: space-between;
+    }
+    
+  }

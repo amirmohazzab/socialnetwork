@@ -3,6 +3,7 @@ import axios from 'axios'
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { successMessage } from "../utils/message";
+import { baseUrl } from './../utils/baseUrl';
 
 export const AuthContext = createContext();
 
@@ -13,6 +14,7 @@ export const AuthContextProvider = ({children}) => {
     const [token, setToken] = useState("")
     const [userId, setUserId] = useState("")
     const [expire, setExpire] = useState("")
+    const [profilePhoto, setProfilePhoto] = useState(null)
 
     const navigate = useNavigate()
 
@@ -22,11 +24,12 @@ export const AuthContextProvider = ({children}) => {
 
     const refreshToken = async() => {
         try {
-            const response = await axios.get('http://localhost:5000/token')
+            const response = await axios.get(`${baseUrl}/token`)
             setToken(response.data.accessToken)
             const decoded = jwtDecode(response.data.accessToken)
             setUserId(decoded.userId)
             setExpire(decoded.exp)
+            setProfilePhoto(decoded.profilePhoto)
             navigate('/')
         } catch (error) {
             console.log(error)
@@ -42,7 +45,7 @@ export const AuthContextProvider = ({children}) => {
         async (config) => {
             const currentDate = new Date();
             if (expire * 1000 < currentDate.getTime()) {
-                const response = await axios.get('http://localhost:5000/token');
+                const response = await axios.get(`${baseUrl}/token`);
                 config.headers.Authorization = `Bearer ${response.data.accessToken}`
                 setToken(response.data.accessToken)
                 const decoded = jwtDecode(response.data.accessToken);
@@ -50,6 +53,8 @@ export const AuthContextProvider = ({children}) => {
                 setUserId(decoded.userId);
                 //setAdmin(decoded.isAdmin);
                 setExpire(decoded.exp);
+                setProfilePhoto(decoded.profilePhoto)
+                
             }
             return config
         }, (error) => {
@@ -58,7 +63,7 @@ export const AuthContextProvider = ({children}) => {
     )
 
     const getUsers = async() => {
-        const res = await axiosJWT.get('http://localhost:5000/api/users', {
+        const res = await axiosJWT.get(`${baseUrl}/api/users`, {
             headers: {
                 authorization: `Bearer ${token}`
             }
@@ -68,7 +73,7 @@ export const AuthContextProvider = ({children}) => {
 
     const register = async(data) => {
         try {
-            const res = await axios.post('http://localhost:5000/api/users/register', data)
+            const res = await axios.post(`${baseUrl}/api/users/register`, data)
             successMessage(res.data)
         } catch (error) {
             console.log(error)
@@ -79,9 +84,9 @@ export const AuthContextProvider = ({children}) => {
 
     const login = async(data) => {
         try {
-            const res = await axios.post('http://localhost:5000/api/users/login', data)
-            successMessage(res.data.msg)
-            console.log(res)
+            const res = await axios.post(`${baseUrl}/api/users/login`, data)
+            setUserId(res.data.userId)
+            setProfilePhoto(res.data.profilePhoto)
         } catch (error) {
             console.log(error)
             setErrorLogin(error.response.data.message)
@@ -89,7 +94,19 @@ export const AuthContextProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{register, errorRegister, login, errorLogin, getUsers}}>
+        <AuthContext.Provider 
+            value={{
+                register, 
+                errorRegister, 
+                login, 
+                errorLogin, 
+                getUsers,
+                userId,
+                profilePhoto,
+                axiosJWT,
+                token
+            }}
+        >
             {children}
         </AuthContext.Provider>
     )

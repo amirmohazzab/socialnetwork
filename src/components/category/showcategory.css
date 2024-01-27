@@ -1,0 +1,11 @@
+.table thead td, .table thead th {
+    color: whitesmoke;
+}
+
+.table {
+    color: whitesmoke !important;
+}
+
+.table th {
+    color: whitesmoke
+}
