@@ -9,6 +9,7 @@ import axios from 'axios'
 import { AuthContextProvider } from './context/AuthContext';
 import { CategoryContextProvider } from './context/CategoryContext';
 import { PostContextProvider } from './context/PostContext';
+import { CommentContextProvider } from './context/CommentContext';
 
 
 axios.defaults.withCredentials = true;
@@ -21,7 +22,9 @@ root.render(
     <AuthContextProvider>
       <CategoryContextProvider>
         <PostContextProvider>
-          <App />
+          <CommentContextProvider>
+            <App />
+          </CommentContextProvider>
         </PostContextProvider>
       </CategoryContextProvider>
     </AuthContextProvider>

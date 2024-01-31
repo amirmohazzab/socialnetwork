@@ -14,7 +14,7 @@ const formSchema = Yup.object({
 
 const Login = () => {
 
-    const {login, errorLogin, getUsers} = useContext(AuthContext);
+    const {login, errorLogin} = useContext(AuthContext);
 
     const formik = useFormik({
         initialValues: {
@@ -30,7 +30,6 @@ const Login = () => {
   return (
     <div className='container'>
       <Navbar />
-      <button onClick={getUsers}> get users </button>
       <div className="columns is-flex is-align-items-center auth">
         <div className="column is-two-fifths">
             <form onSubmit={formik.handleSubmit} className='has-background-dark box p-6'>

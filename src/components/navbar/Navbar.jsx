@@ -19,7 +19,7 @@ const Navbar = () => {
             </Link>
             {
                 userId && 
-                <Link to='/' className='button is-danger mt-4'> Send Post 
+                <Link to='/add-post' className='button is-danger mt-4'> Send Post 
                   <AiOutlineUpload className='is-size-3 ml-2'/>
                 </Link>
             }

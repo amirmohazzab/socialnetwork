@@ -87,6 +87,7 @@ export const AuthContextProvider = ({children}) => {
             const res = await axios.post(`${baseUrl}/api/users/login`, data)
             setUserId(res.data.userId)
             setProfilePhoto(res.data.profilePhoto)
+            navigate('/')
         } catch (error) {
             console.log(error)
             setErrorLogin(error.response.data.message)
