@@ -21,7 +21,9 @@ const PostList = () => {
   <article className="media">
     <div className="media-left">
       <figure className="image is-64x64">
-        <img src={post?.user?.profilePhoto} alt="Image" className='img-profile'/>
+        <Link to={`/profile/${post?.user?._id}`}>
+          <img src={post?.user?.profilePhoto} alt="Image" className='img-profile'/>
+        </Link>
       </figure>
     </div>
     <div className="media-content">
@@ -71,7 +73,6 @@ const PostList = () => {
   </article>
     </div>
         ))
-
       }
     </>
   )

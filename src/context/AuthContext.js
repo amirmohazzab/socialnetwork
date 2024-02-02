@@ -15,6 +15,8 @@ export const AuthContextProvider = ({children}) => {
     const [userId, setUserId] = useState("")
     const [expire, setExpire] = useState("")
     const [profilePhoto, setProfilePhoto] = useState(null)
+    const [userData, setUserData] = useState([])
+    const [findFollow, setFindFollow] = useState(null)
 
     const navigate = useNavigate()
 
@@ -94,6 +96,119 @@ export const AuthContextProvider = ({children}) => {
         }
     }
 
+
+    const Profile = async() => {
+        try {
+            const res = await axiosJWT.get(`${baseUrl}/api/users/profile/${userId}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            setUserData(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const profilePhotoUpload = async(data) => {
+        try {
+            const formData = new FormData();
+            formData.append("image", data)
+            const res = await axiosJWT.put(`${baseUrl}/api/users/profilephoto-upload`, formData, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            Profile()
+            successMessage(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const profileUpdate = async(data) => {
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/users/${userId}`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            successMessage(res.data)
+            navigate('/profile')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const profileUser = async(id) => {
+        try {
+            const res = await axiosJWT.get(`${baseUrl}/api/users/profile/${id}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            setUserData(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const follow = async(followId) => {
+        const data = {
+            followId: followId
+        }
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/users/follow`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            profileUser(followId)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const unFollow = async(unfollowId) => {
+        const data = {
+            unfollowId: unfollowId
+        }
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/users/unfollow`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            profileUser(unfollowId)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    
+    const findFollower = async(followId) => {
+        const data = {
+            userId: userId,
+            followId: followId
+        }
+        try {
+            const res = await axiosJWT.post(`${baseUrl}/api/users/findFollower`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            setFindFollow(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <AuthContext.Provider 
             value={{
@@ -105,7 +220,16 @@ export const AuthContextProvider = ({children}) => {
                 userId,
                 profilePhoto,
                 axiosJWT,
-                token
+                token,
+                Profile,
+                userData,
+                profilePhotoUpload,
+                profileUpdate,
+                profileUser,
+                follow,
+                unFollow,
+                findFollower,
+                findFollow
             }}
         >
             {children}

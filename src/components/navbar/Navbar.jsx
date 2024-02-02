@@ -36,14 +36,13 @@ const Navbar = () => {
                                     <div className='profile'>
                                         <Link to='/profile' className='is-flex is-align-items-center'> Profile </Link>
                                         <Link to='/update-password' className='is-flex is-align-items-center'> Edit Password </Link>
-                                        <button className='is-flex is-align-items-center'> Exit </button>
+                                        <button  className='is-flex is-align-items-center'> Exit </button>
                                     </div>
                                 ) : ""
                             }
                         </span>
                         <Link to="/" className="navbar-item"> Home </Link>
                         <Link to="/add-category" className="navbar-item"> Create Category </Link>
-                        <Link to="/logout" className="navbar-item"> Exit </Link>
                     </>
                 ) : (
                     <>

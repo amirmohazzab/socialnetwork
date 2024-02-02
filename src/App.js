@@ -8,6 +8,11 @@ import EditCategory from './components/category/EditCategory';
 import AddPost from './pages/post/AddPost';
 import DetailPost from './pages/post/DetailPost';
 import EditPost from './pages/post/EditPost';
+import Profile from './pages/profile/Profile';
+import UpdateProfile from './pages/profile/UpdateProfile';
+import ProfileUser from './pages/profile/ProfileUser';
+import Followers from './components/profile/Followers';
+import Following from './components/profile/Following';
 
 
 function App() {
@@ -24,6 +29,12 @@ function App() {
         <Route path='/add-post' element={<AddPost />} />
         <Route path='/detail-post/:id' element={<DetailPost />} />
         <Route path='/edit-post/:id' element={<EditPost />} /> 
+
+        <Route path='/profile' element={<Profile />} /> 
+        <Route path='/profile/:id' element={<ProfileUser />} /> 
+        <Route path='/user/update' element={<UpdateProfile />} /> 
+        <Route path='/followers' element={<Followers />} /> 
+        <Route path='/following' element={<Following />} /> 
         
       </Routes>
       <ToastContainer />
