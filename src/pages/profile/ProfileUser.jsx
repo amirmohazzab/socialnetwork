@@ -40,18 +40,6 @@ const ProfileUser = () => {
     <div className="container">
         <Navbar />
 
-        {
-            !userData.isAccountverified ? (
-                <div className="not-verified has-background-danger is-size-5 is-flex is-align-items-center">
-                    <h1 className='p-3 has-text-warning is-flex is-align-items-center'>
-                        <BsFillExclamationTriangleFill className='mr-2'/> Your account not verified
-                        <button className='is-size-6 has-text-white ml-2 button is-info'> click for verification </button>
-                    </h1>
-
-                </div>
-            ) : ""
-        }
-
         <div className="columns mt-6">
             <div className="column has-background-white">
                 <div className="profile-information is-flex is-align-items-end">
@@ -71,7 +59,7 @@ const ProfileUser = () => {
                         </div>
                         <div className="account-verify pl-5">
                             {
-                                userData?.isAccountverified ? (
+                                userData?.isAccountVerified ? (
                                     <div className='has-background-success box mb-0 p-1 has-text-centered has-text-white'>
                                         Account verified
                                     </div>
@@ -129,7 +117,7 @@ const ProfileUser = () => {
                         userData._id === userId ? ("") : (
                             <div className="send-message">
                                 <button className='is-flex is-align-items-center is-size-6 ml-3 button is-link'>
-                                    <Link to='/' className='has-text-white mr-2'>
+                                    <Link to='/user/send-email' state={userData.email} className='has-text-white mr-2'>
                                         Send Message
                                     </Link>
                                     <BsWalletFill />

@@ -13,6 +13,10 @@ import UpdateProfile from './pages/profile/UpdateProfile';
 import ProfileUser from './pages/profile/ProfileUser';
 import Followers from './components/profile/Followers';
 import Following from './components/profile/Following';
+import SendEmail from './components/profile/sendemail/SendEmail';
+import VerifyAccount from './components/profile/verifyaccount/VerifyAccount';
+import Users from './pages/users/Users';
+import UpdatePassword from './components/profile/passwordmanage/UpdatePassword';
 
 
 function App() {
@@ -30,11 +34,15 @@ function App() {
         <Route path='/detail-post/:id' element={<DetailPost />} />
         <Route path='/edit-post/:id' element={<EditPost />} /> 
 
+        <Route path='/users' element={<Users />} /> 
         <Route path='/profile' element={<Profile />} /> 
         <Route path='/profile/:id' element={<ProfileUser />} /> 
-        <Route path='/user/update' element={<UpdateProfile />} /> 
         <Route path='/followers' element={<Followers />} /> 
         <Route path='/following' element={<Following />} /> 
+        <Route path='/user/update' element={<UpdateProfile />} /> 
+        <Route path='/user/send-email' element={<SendEmail />} /> 
+        <Route path='/verify-account/:id' element={<VerifyAccount />} /> 
+        <Route path='/update-password' element={<UpdatePassword />} /> 
         
       </Routes>
       <ToastContainer />

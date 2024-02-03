@@ -17,6 +17,9 @@ export const AuthContextProvider = ({children}) => {
     const [profilePhoto, setProfilePhoto] = useState(null)
     const [userData, setUserData] = useState([])
     const [findFollow, setFindFollow] = useState(null)
+    const [emailuser, setEmailUser] = useState("")
+    const [errorVerifyAccount, setErrorVerifyAccont] = useState(null)
+    const [users, setUsers] = useState([])
 
     const navigate = useNavigate()
 
@@ -32,6 +35,7 @@ export const AuthContextProvider = ({children}) => {
             setUserId(decoded.userId)
             setExpire(decoded.exp)
             setProfilePhoto(decoded.profilePhoto)
+            setEmailUser(decoded.emailuser)
             navigate('/')
         } catch (error) {
             console.log(error)
@@ -56,7 +60,7 @@ export const AuthContextProvider = ({children}) => {
                 //setAdmin(decoded.isAdmin);
                 setExpire(decoded.exp);
                 setProfilePhoto(decoded.profilePhoto)
-                
+                setEmailUser(decoded.emailuser)
             }
             return config
         }, (error) => {
@@ -70,7 +74,7 @@ export const AuthContextProvider = ({children}) => {
                 authorization: `Bearer ${token}`
             }
         })
-        console.log(res)
+        setUsers(res.data)
     }
 
     const register = async(data) => {
@@ -89,6 +93,7 @@ export const AuthContextProvider = ({children}) => {
             const res = await axios.post(`${baseUrl}/api/users/login`, data)
             setUserId(res.data.userId)
             setProfilePhoto(res.data.profilePhoto)
+            setEmailUser(res.emailuser)
             navigate('/')
         } catch (error) {
             console.log(error)
@@ -209,6 +214,124 @@ export const AuthContextProvider = ({children}) => {
         }
     }
 
+
+    const sendEmail = async(data) => {
+        try {
+            const emailData = {
+                to: data.email,
+                subject: data.subject,
+                message: data.description,
+                email: emailuser
+            }
+            const res = await axiosJWT.post(`${baseUrl}/api/email`, emailData, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            successMessage(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+    const verifyUser = async() => {
+        try {
+            const data = {
+                user: userId
+            }
+            const res = await axiosJWT.post(`${baseUrl}/api/users/generate-verify-email-token`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            successMessage(res.data)
+            console.log("res", res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const verifyAccount = async(token) => {
+        try {
+            const data = {
+                token: token
+            }
+            const res = await axiosJWT.put(`${baseUrl}/api/users/verify-account`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            console.log(error.response.data.message)
+            setErrorVerifyAccont(error.response.data.message)
+        }
+    }
+
+
+
+    const blockUser = async(id) => {
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/users/block-user/${id}`, id, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            getUsers()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const unBlockUser = async(id) => {
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/users/unblock-user/${id}`, id, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            getUsers()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    
+    const updatePassword = async(data) => {
+        const passwordData = {
+            password: data.password
+        }
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/users/password`, passwordData, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            successMessage(res.data)
+            navigate('/')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const logout = async(data) => {
+        try {
+            const res = await axios.delete(`${baseUrl}/api/users/logout`)
+            setUserId("")
+            navigate('/login')
+            successMessage(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     return (
         <AuthContext.Provider 
             value={{
@@ -229,7 +352,16 @@ export const AuthContextProvider = ({children}) => {
                 follow,
                 unFollow,
                 findFollower,
-                findFollow
+                findFollow,
+                sendEmail,
+                verifyUser,
+                verifyAccount,
+                errorVerifyAccount,
+                users,
+                blockUser,
+                unBlockUser,
+                updatePassword,
+                logout
             }}
         >
             {children}

@@ -11,7 +11,7 @@ import './profile.css'
 
 const Profile = () => {
 
-    const {Profile, userData, userId, profilePhotoUpload} = useContext(AuthContext)
+    const {Profile, userData, userId, profilePhotoUpload, verifyUser} = useContext(AuthContext)
     const {likePost, disLikePost} = useContext(PostContext)
 
     const [file, setFile] = useState("")
@@ -32,17 +32,17 @@ const Profile = () => {
         Profile()
     }, [])
 
-    console.log(userData)
+  
   return (
     <div className="container">
         <Navbar />
 
         {
-            !userData.isAccountverified ? (
+            !userData.isAccountVerified ? (
                 <div className="not-verified has-background-danger is-size-5 is-flex is-align-items-center">
                     <h1 className='p-3 has-text-warning is-flex is-align-items-center'>
                         <BsFillExclamationTriangleFill className='mr-2'/> Your account not verified
-                        <button className='is-size-6 has-text-white ml-2 button is-info'> click for verification </button>
+                        <button onClick={verifyUser} className='is-size-6 has-text-white ml-2 button is-info'> click for verification </button>
                     </h1>
 
                 </div>
@@ -68,7 +68,7 @@ const Profile = () => {
                         </div>
                         <div className="account-verify pl-5">
                             {
-                                userData?.isAccountverified ? (
+                                userData?.isAccountVerified ? (
                                     <div className='has-background-success box mb-0 p-1 has-text-centered has-text-white'>
                                         Account verified
                                     </div>

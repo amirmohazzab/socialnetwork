@@ -1,0 +1,7 @@
+.table-user thead td, .table-user thead th {
+    color: black !important;
+}
+
+.table-user td, .table-user th {
+    color: black !important;
+}
