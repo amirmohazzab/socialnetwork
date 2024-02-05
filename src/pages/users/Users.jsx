@@ -3,6 +3,11 @@ import Navbar from '../../components/navbar/Navbar'
 import { AuthContext } from '../../context/AuthContext'
 import './users.css'
 import { Link } from 'react-router-dom'
+import { FaMessage } from "react-icons/fa6";
+import { RiAccountPinCircleFill } from "react-icons/ri";
+import { TbLock } from "react-icons/tb";
+import { TbLockOpen } from "react-icons/tb";
+
 
 const Users = () => {
 
@@ -13,7 +18,7 @@ const Users = () => {
     }, [])
 
   return (
-    <div className="container">
+    <div className="container mobile">
         <Navbar />
         <div className="columns mt-6">
             <div className="column">
@@ -25,7 +30,7 @@ const Users = () => {
                             <th> lastName </th>
                             <th> Email</th>
                             <th> Follow </th>
-                            <th> Send Message </th>
+                            <th> Message </th>
                             <th> Checking </th>
                             <th> State </th>
                         </tr>
@@ -45,7 +50,7 @@ const Users = () => {
                                             to='/user/send-email' 
                                             className='button is-link'
                                         > 
-                                            Send Message 
+                                            <FaMessage className='mr-1'/> <p> Message </p> 
                                         </Link>
                                     </td>
                                     <td>
@@ -53,16 +58,18 @@ const Users = () => {
                                             to={`/profile/${user._id}`} 
                                             className='button is-success'
                                         > 
-                                            Profile
+                                            <RiAccountPinCircleFill className='mr-1' /> <p> Profile </p> 
                                         </Link>
                                     </td>
                                     <td>
                                         {
                                             user.isBlocked ? (
-                                                <button onClick={()=>unBlockUser(user._id)} className='button is-dark'> Remove Block </button>
+                                                <button onClick={()=>unBlockUser(user._id)} className='button is-dark'> 
+                                                    <TbLockOpen className='mr-1' /> <p> Remove Block </p> 
+                                                </button>
                                             ) : (
                                                 <button onClick={()=>blockUser(user._id)} className='button is-danger'>
-                                                    Block
+                                                    <TbLock className='mr-1' /> <p> Block </p>
                                                 </button>
                                             )
                                         }

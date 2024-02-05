@@ -1,10 +1,13 @@
 import React, {useState, useContext, useEffect} from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import Navbar from '../../components/navbar/Navbar'
 import './post.css'
 import { CategoryContext } from '../../context/CategoryContext'
 import { PostContext } from '../../context/PostContext'
+import './post.css'
 
 const formSchema = Yup.object({
     title: Yup.string().required(),
@@ -15,7 +18,7 @@ const formSchema = Yup.object({
 const AddPost = () => {
 
     const {category, getCategory} = useContext(CategoryContext)
-    const {addPost} = useContext(PostContext)
+    const {addPost, errorPost} = useContext(PostContext)
     
     useEffect(()=> {
         getCategory()
@@ -51,10 +54,11 @@ const AddPost = () => {
     })
 
   return (
-    <div className="container">
+    <div className="container tablet mobile">
         <Navbar />
         <div className="columns mt-4 pt-4">
             <div className="column">
+                <h1 className='is-size-3 has-text-centered has-text-danger pb-5 pt-5'>{errorPost}</h1>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="post-editor is-flex">
                         <div className="post-editor-right pr-5">
@@ -78,14 +82,23 @@ const AddPost = () => {
                             <div className="field mt-5">
                                 <label className='label'> post content </label>
                                 <div className="control">
-                                    <textarea 
+                                    <ReactQuill 
+                                        name='description'
+                                        theme="snow"
+                                        className='has-background-white'
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange('description')}
+                                        onBlur={formik.handleBlur('description')}
+
+                                    />
+                                    {/* <textarea 
                                         className='textarea' 
                                         placeholder='your content'
                                         value={formik.values.description}
                                         onChange={formik.handleChange('description')}
                                         onBlur={formik.handleBlur('description')}
                                     >
-                                    </textarea>
+                                    </textarea> */}
                                     <p className='help is-danger'>
                                         {formik.touched.description && formik.errors.description}
                                     </p>
@@ -97,7 +110,7 @@ const AddPost = () => {
                                 <label className='label'> post category </label>
                                 <div className="select is-fullwidth">
                                     <select 
-                                        name=""
+                                        name="category"
                                         value={formik.values.category}
                                         onChange={formik.handleChange('category')}
                                         onBlur={formik.handleBlur('category')}
@@ -118,6 +131,7 @@ const AddPost = () => {
                                 <label className='label'> post pic </label>
                                 <div className="control">
                                     <input 
+                                        name='image'
                                         type="file" 
                                         className="input"
                                         value={formik.values.image}
@@ -127,7 +141,7 @@ const AddPost = () => {
                                     {
                                         preview ? (
                                             <figure className='image-preview mt-3'>
-                                                <img src={preview} alt="" className='is-128x128'/>
+                                                <img src={preview} alt="" className='is-64x64'/>
                                             </figure>
 
                                         ) : ""

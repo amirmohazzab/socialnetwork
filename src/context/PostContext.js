@@ -9,11 +9,13 @@ export const PostContext = createContext();
 
 export const PostContextProvider = ({children}) => {
 
-    const {userId, axiosJWT, token} = useContext(AuthContext);
+    const {userId, axiosJWT, token, Profile, profileUser} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [posts, setPosts] = useState([])
     const [singlePost, setSinglePost] = useState("")
+    const [popularPosts, setPopularPosts] = useState([])
+    const [errorPost, setErrorPost] = useState("")
 
     const addPost = async(data) => {
         try {
@@ -34,6 +36,7 @@ export const PostContextProvider = ({children}) => {
 
         } catch (error) {
             console.log(error)
+            setErrorPost(error.response.data.message)
         }
     }
 
@@ -109,6 +112,7 @@ export const PostContextProvider = ({children}) => {
                 }
             })
             getPosts()
+            Profile()
         } catch (error) {
             console.log(error)
         }
@@ -127,6 +131,59 @@ export const PostContextProvider = ({children}) => {
                 }
             })
             getPosts()
+            Profile()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+    const likePostProfile = async(postId, user) => {
+        const data = {
+            postId: postId
+        }
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/post/likes`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            getPosts()
+            profileUser(user)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const disLikePostProfile = async(postId, user) => {
+        const data = {
+            postId: postId
+        }
+        try {
+            const res = await axiosJWT.put(`${baseUrl}/api/post/dislikes`, data, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            getPosts()
+            profileUser(user)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+    const popularPost = async() => {
+        try {
+            const res = await axiosJWT.get(`${baseUrl}/api/post/popular`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            setPopularPosts(res.data)
         } catch (error) {
             console.log(error)
         }
@@ -135,7 +192,22 @@ export const PostContextProvider = ({children}) => {
 
     return (
         <PostContext.Provider 
-            value={{addPost, getPosts, posts, detailPost, singlePost, editPost, deletePost, likePost, disLikePost}}
+            value={{
+                addPost, 
+                getPosts, 
+                posts, 
+                detailPost, 
+                singlePost, 
+                editPost, 
+                deletePost, 
+                likePost, 
+                disLikePost,
+                popularPost,
+                popularPosts,
+                errorPost,
+                likePostProfile,
+                disLikePostProfile
+            }}
         >
             {children}
         </PostContext.Provider>

@@ -20,6 +20,9 @@ export const AuthContextProvider = ({children}) => {
     const [emailuser, setEmailUser] = useState("")
     const [errorVerifyAccount, setErrorVerifyAccont] = useState(null)
     const [users, setUsers] = useState([])
+    const [popularUsers, setPopularUsers] = useState([])
+    const [isAdmin, setIsAdmin] = useState(null)
+ 
 
     const navigate = useNavigate()
 
@@ -36,6 +39,7 @@ export const AuthContextProvider = ({children}) => {
             setExpire(decoded.exp)
             setProfilePhoto(decoded.profilePhoto)
             setEmailUser(decoded.emailuser)
+            setIsAdmin(decoded.admin)
             navigate('/')
         } catch (error) {
             console.log(error)
@@ -61,6 +65,7 @@ export const AuthContextProvider = ({children}) => {
                 setExpire(decoded.exp);
                 setProfilePhoto(decoded.profilePhoto)
                 setEmailUser(decoded.emailuser)
+                setIsAdmin(decoded.admin)
             }
             return config
         }, (error) => {
@@ -75,6 +80,20 @@ export const AuthContextProvider = ({children}) => {
             }
         })
         setUsers(res.data)
+    }
+
+
+    const popularUser = async() => {
+        try {
+            const res = await axiosJWT.get(`${baseUrl}/api/users/popular`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            setPopularUsers(res.data)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const register = async(data) => {
@@ -93,7 +112,8 @@ export const AuthContextProvider = ({children}) => {
             const res = await axios.post(`${baseUrl}/api/users/login`, data)
             setUserId(res.data.userId)
             setProfilePhoto(res.data.profilePhoto)
-            setEmailUser(res.emailuser)
+            setEmailUser(res.data.emailuser)
+            setIsAdmin(res.data.admin)
             navigate('/')
         } catch (error) {
             console.log(error)
@@ -173,15 +193,16 @@ export const AuthContextProvider = ({children}) => {
                 }
             })
             profileUser(followId)
+            successMessage(res.data)
         } catch (error) {
             console.log(error)
         }
     }
 
 
-    const unFollow = async(unfollowId) => {
+    const unFollow = async(unFollowId) => {
         const data = {
-            unfollowId: unfollowId
+            unFollowId: unFollowId
         }
         try {
             const res = await axiosJWT.put(`${baseUrl}/api/users/unfollow`, data, {
@@ -189,7 +210,8 @@ export const AuthContextProvider = ({children}) => {
                     authorization: `Bearer ${token}`
                 }
             })
-            profileUser(unfollowId)
+            profileUser(unFollowId)
+            successMessage(res.data)
         } catch (error) {
             console.log(error)
         }
@@ -332,6 +354,9 @@ export const AuthContextProvider = ({children}) => {
     }
 
 
+    
+
+
     return (
         <AuthContext.Provider 
             value={{
@@ -361,7 +386,10 @@ export const AuthContextProvider = ({children}) => {
                 blockUser,
                 unBlockUser,
                 updatePassword,
-                logout
+                logout,
+                popularUser,
+                popularUsers,
+                isAdmin
             }}
         >
             {children}

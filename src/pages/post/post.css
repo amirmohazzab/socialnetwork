@@ -14,3 +14,16 @@
 .single-title {
     color: rgb(194, 168, 0) !important;
 }
+
+
+.ql-editor {
+    height: 300px;
+}
+
+
+@media screen and (max-width: 768px){
+    .tablet {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}

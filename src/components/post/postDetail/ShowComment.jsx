@@ -2,12 +2,15 @@ import React, {useContext, useState} from 'react'
 import {BsFillTrash2Fill, BsFillChatSquareDotsFill} from 'react-icons/bs'
 import { useParams } from 'react-router-dom'
 import { CommentContext } from '../../../context/CommentContext'
+import { AuthContext } from '../../../context/AuthContext'
+import './comment.css'
 
 const ShowComment = ({comment}) => {
 
     const {id} = useParams()
 
     const {updateComment, deleteComment} = useContext(CommentContext)
+    const {userId} = useContext(AuthContext)
 
     const [showComment, setShowComment] = useState(false)
     const [editComment, setEditComment] = useState({
@@ -32,17 +35,30 @@ const ShowComment = ({comment}) => {
                 </div>
     }
 
+
   return (
     <div className="comment-list mt-6 pb-6">
         {
             comment?.map((com) => (
                 <div className="box" key={com._id}>
                     <div className="comment is-flex is-justify-content-space-between">
-                        <div className="comment-desc">
-                            {com.description}
+                        <div className="authpr">
+                            <div className="comment-author is-flex is-align-items-center">
+                                <div className="comment-img">
+                                    <img src={com?.user?.profilePhoto} alt="" />
+                                </div>
+                                <div className="comment-name pl-4">
+                                    <h1>{com?.user?.firstName} {com?.user?.lastName} </h1>
+                                </div>
+                            </div>
+                            <div className="comment-desc pl-6 pt-4">{com.description}</div>
                         </div>
                         <div className='is-flex'>
-                            <span>
+                            {
+                                com?.user?._id === userId ? 
+                                (
+                                    <>
+                                        <span>
                                 <BsFillTrash2Fill 
                                     className='is-size-5 has-text-danger is-clickable mr-3'
                                     onClick={()=> deleteComment({commentId: com._id, postId: id})}
@@ -54,6 +70,9 @@ const ShowComment = ({comment}) => {
                                     onClick={()=> setEditComment({commentId: com._id, postId: id})}
                                 />
                             </span>
+                                    </>
+                                ) : ""
+                            }
                         </div>
                     </div>
                 </div>

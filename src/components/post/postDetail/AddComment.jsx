@@ -13,7 +13,7 @@ const formSchema = Yup.object({
 const AddComment = () => {
 
     const {id} = useParams();
-    const {createComment} = useContext(CommentContext)
+    const {createComment, errorComment} = useContext(CommentContext)
 
     
     const formik = useFormik({
@@ -32,6 +32,7 @@ const AddComment = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
+        <h1 className='is-size-3 has-text-centered has-text-danger pb-5 pt-5'>{errorComment}</h1>
         <div className="field">
             <label className="label"> Add Comment </label>
             <div className="control">

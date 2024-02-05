@@ -35,12 +35,17 @@
 
 .navbar .profile {
     position: absolute;
-    top: 80px;
+    top: 60px;
     left: 0;
     background: white;
     width: 150px;
     padding: 20px 10px;
     box-shadow: 0 0 10px rgb(0, 0, 0, 0.4);
+    border-radius: 2%;
+    -webkit-border-radius: 2%;
+    -moz-border-radius: 2%;
+    -ms-border-radius: 2%;
+    -o-border-radius: 2%;
 }
 
 .navbar .profile a {

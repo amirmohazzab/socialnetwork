@@ -10,8 +10,8 @@ import { PostContext } from '../../context/PostContext';
 import './profile.css'
 
 const ProfileUser = () => {
-    const {Profile, userData, userId, profilePhotoUpload, profileUser, follow, unFollow, findFollower, findFollow} = useContext(AuthContext)
-    const {likePost, disLikePost} = useContext(PostContext)
+    const {Profile, userData, userId, profilePhotoUpload, profileUser, follow, unFollow, findFollower, findFollow, isAdmin} = useContext(AuthContext)
+    const {likePostProfile, disLikePostProfile} = useContext(PostContext)
 
     const [file, setFile] = useState("")
     const [showBtn, setShowBtn] = useState(false)
@@ -35,6 +35,7 @@ const ProfileUser = () => {
         findFollower(id)
     }, [])
 
+    console.log(findFollow)
     
   return (
     <div className="container">
@@ -114,15 +115,25 @@ const ProfileUser = () => {
 
 
                     {
-                        userData._id === userId ? ("") : (
-                            <div className="send-message">
-                                <button className='is-flex is-align-items-center is-size-6 ml-3 button is-link'>
-                                    <Link to='/user/send-email' state={userData.email} className='has-text-white mr-2'>
-                                        Send Message
-                                    </Link>
-                                    <BsWalletFill />
-                                </button>
-                            </div>
+                        userData._id === userId ? "" : (
+                            <>
+                                {
+                                    isAdmin 
+                                    ? 
+                                    (
+                                        <div className="send-message">
+                                            <button className='is-flex is-align-items-center is-size-6 ml-3 button is-link'>
+                                                <Link to='/user/send-email' state={userData.email} className='has-text-white mr-2'>
+                                                    Send Message
+                                                </Link>
+                                                <BsWalletFill />
+                                            </button>
+                                        </div>
+                                    ) 
+                                    : 
+                                    ""
+                                }
+                           </>
                         )
                     }
                    
@@ -165,7 +176,7 @@ const ProfileUser = () => {
         <div className="level-right">
             <a className="level-item">
               <span className='is-small is-flex is-align-items-center'> 
-                <AiTwotoneDislike className='is-size-4 has-text-danger' onClick={()=> disLikePost(post._id)} />
+                <AiTwotoneDislike className='is-size-4 has-text-danger' onClick={()=> disLikePostProfile(post._id, userData._id )} />
                 <span className='has-text-danger is-size-4 ml-1'> 
                   {post?.disLikes?.length } 
                 </span>
@@ -173,7 +184,7 @@ const ProfileUser = () => {
             </a>
             <a className="level-item ml-2">
               <span className='is-small is-flex is-align-items-center'> 
-                <AiFillLike className='is-size-4' onClick={()=> likePost(post._id)}/>
+                <AiFillLike className='is-size-4' onClick={()=> likePostProfile(post._id, userData._id)}/>
                 <span className='is-size-4 ml-1'> 
                   {post?.likes?.length } 
                 </span>
@@ -194,7 +205,7 @@ const ProfileUser = () => {
                     {
                         userData?.viewedBy?.map((user, index) => (
                             <li key={index} className='mb-5'>
-                                <Link to='/' className='is-flex is-align-items-center'>
+                                <Link to={`/profile/${user._id}`} className='is-flex is-align-items-center'>
                                     <div className="avatar">
                                         <img src={user.profilePhoto} width='60' alt="" />
                                     </div>

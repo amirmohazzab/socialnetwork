@@ -1,4 +1,4 @@
-import { createContext, useContext} from "react";
+import { createContext, useContext, useState} from "react";
 import { AuthContext } from "./AuthContext";
 import { baseUrl } from "../utils/baseUrl";
 import { successMessage } from "../utils/message";
@@ -10,6 +10,7 @@ export const CommentContextProvider = ({children}) => {
 
     const {axiosJWT, token} = useContext(AuthContext)
     const {detailPost} = useContext(PostContext)
+    const [errorComment, setErrorComment] = useState("")
 
     const createComment = async(data) => {
         try {
@@ -22,6 +23,7 @@ export const CommentContextProvider = ({children}) => {
             detailPost(data.postId)
         } catch (error) {
             console.log(error)
+            setErrorComment(error.response.data.message)
         }
     }
 
@@ -57,7 +59,7 @@ export const CommentContextProvider = ({children}) => {
     
     return (
         <CommentContext.Provider 
-            value={{createComment, updateComment, deleteComment}}
+            value={{createComment, updateComment, deleteComment, errorComment}}
         >
             {children}
         </CommentContext.Provider>

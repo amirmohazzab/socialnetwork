@@ -172,7 +172,7 @@ const Profile = () => {
                     {
                         userData?.viewedBy?.map((user, index) => (
                             <li key={index} className='mb-5'>
-                                <Link to='/' className='is-flex is-align-items-center'>
+                                <Link to={`/profile/${user._id}`} className='is-flex is-align-items-center'>
                                     <div className="avatar">
                                         <img src={user.profilePhoto} width='60' alt="" />
                                     </div>

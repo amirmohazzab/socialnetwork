@@ -5,3 +5,42 @@
 .table-user td, .table-user th {
     color: black !important;
 }
+
+
+@media screen and (max-width: 992px){
+
+    tr th:nth-child(1), tr td:nth-child(1){
+        display: none;
+    }
+
+    tr th:nth-child(3), tr td:nth-child(3){
+        display: none;
+    }
+
+    tr th:nth-child(6) p, tr td:nth-child(6) p{
+        display: none;
+    }
+
+    tr th:nth-child(7) p, tr td:nth-child(7) p{
+        display: none;
+    }
+
+    tr th:nth-child(8) p, tr td:nth-child(8) p{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px){
+
+    tr th:nth-child(2), tr td:nth-child(2){
+        display: none;
+    }
+}
+
+
+@media screen and (max-width: 600px){
+    .tablet {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}
